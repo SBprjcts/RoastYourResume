@@ -1,0 +1,27 @@
+{
+  "body": "{\"s3_bucket\": \"resume-roaster-uploads-827445769026\", \"s3_key\": \"uploads/test-uuid/sample-resume.pdf\", \"request_id\": \"test-uuid-123\"}",
+  "resource": "/roast",
+  "path": "/roast",
+  "httpMethod": "POST",
+  "headers": {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "X-Api-Key": "test-api-key"
+  },
+  "queryStringParameters": null,
+  "pathParameters": null,
+  "stageVariables": null,
+  "requestContext": {
+    "accountId": "827445769026",
+    "resourceId": "test",
+    "stage": "prod",
+    "requestId": "test-request-id",
+    "identity": {
+      "sourceIp": "127.0.0.1"
+    },
+    "resourcePath": "/roast",
+    "httpMethod": "POST",
+    "apiId": "test-api-id"
+  },
+  "isBase64Encoded": false
+}

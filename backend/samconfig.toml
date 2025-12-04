@@ -1,0 +1,16 @@
+version = 0.1
+
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "resume-roaster-backend"
+s3_bucket = ""
+s3_prefix = "resume-roaster-backend"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+parameter_overrides = []
+resolve_s3 = true
+
+[default.global.parameters]
+region = "us-east-1"

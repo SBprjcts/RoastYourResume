@@ -1,0 +1,101 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Resume Roaster - Serverless RAG Backend with AWS Bedrock
+
+Globals:
+  Function:
+    Timeout: 60
+    MemorySize: 3008
+    Runtime: python3.11
+    Environment:
+      Variables:
+        POWERTOOLS_SERVICE_NAME: resume-roaster
+        LOG_LEVEL: INFO
+
+Resources:
+  # Lambda Function
+  ResumeRoasterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: handler.lambda_handler
+      Description: Processes resume PDFs using RAG with AWS Bedrock
+      Policies:
+        - Statement:
+            - Sid: BedrockInvokeModel
+              Effect: Allow
+              Action:
+                - bedrock:InvokeModel
+              Resource:
+                - arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-5-sonnet-20241022-v2:0
+                - arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v1
+            - Sid: S3GetObject
+              Effect: Allow
+              Action:
+                - s3:GetObject
+              Resource: arn:aws:s3:::resume-roaster-uploads-*/*
+            - Sid: CloudWatchLogs
+              Effect: Allow
+              Action:
+                - logs:CreateLogGroup
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+              Resource: '*'
+      Events:
+        RoastApiPost:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RoasterApi
+            Path: /roast
+            Method: POST
+            Auth:
+              ApiKeyRequired: true
+
+  # API Gateway
+  RoasterApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: ResumeRoasterApi
+      StageName: prod
+      Cors:
+        AllowMethods: "'POST,OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+      Auth:
+        ApiKeyRequired: true
+        UsagePlan:
+          CreateUsagePlan: PER_API
+          Description: Usage plan for Resume Roaster API
+          Quota:
+            Limit: 1000
+            Period: DAY
+          Throttle:
+            BurstLimit: 50
+            RateLimit: 20
+
+Outputs:
+  ApiGatewayUrl:
+    Description: API Gateway endpoint URL for Resume Roaster
+    Value: !Sub 'https://${RoasterApi}.execute-api.${AWS::Region}.amazonaws.com/prod'
+    Export:
+      Name: ResumeRoasterApiUrl
+
+  ApiGatewayInvokeUrl:
+    Description: Full invoke URL for the /roast endpoint
+    Value: !Sub 'https://${RoasterApi}.execute-api.${AWS::Region}.amazonaws.com/prod/roast'
+
+  ApiKeyCommand:
+    Description: Run this command to get the API key value
+    Value: !Sub 'aws apigateway get-api-keys --region ${AWS::Region} --include-values --query "items[?name==''${RoasterApi}-ApiKey''].value | [0]" --output text'
+
+  LambdaFunctionArn:
+    Description: Resume Roaster Lambda Function ARN
+    Value: !GetAtt ResumeRoasterFunction.Arn
+    Export:
+      Name: ResumeRoasterFunctionArn
+
+  LambdaFunctionName:
+    Description: Resume Roaster Lambda Function Name
+    Value: !Ref ResumeRoasterFunction
+    Export:
+      Name: ResumeRoasterFunctionName

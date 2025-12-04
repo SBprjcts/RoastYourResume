@@ -1,0 +1,7 @@
+boto3
+numpy==1.26.4
+faiss-cpu==1.7.4
+langchain
+langchain-aws
+langchain-community
+pypdf
