@@ -5,8 +5,8 @@ Modular helper functions for PDF processing, embeddings, and LLM generation
 
 import boto3
 from typing import List
-from langchain.schema import Document
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_core.documents import Document
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.vectorstores import FAISS
 from langchain_aws import BedrockEmbeddings, ChatBedrock
@@ -109,10 +109,10 @@ def generate_roast(context: str, resume_text: str) -> str:
     Returns:
         Generated roast as string
     """
-    # Initialize Claude 3.5 Sonnet
+    # Initialize Claude Sonnet 4.5 (using cross-region inference profile for on-demand access)
     llm = ChatBedrock(
         client=bedrock_runtime,
-        model_id="anthropic.claude-3-5-sonnet-20241022-v2:0",
+        model_id="us.anthropic.claude-sonnet-4-5-20250929-v1:0",
         model_kwargs={
             "max_tokens": 4000,
             "temperature": 0.8,  # Creative roasting
@@ -126,8 +126,8 @@ def generate_roast(context: str, resume_text: str) -> str:
 Your job is to roast resumes with brutal honesty while providing actionable feedback.
 Be sarcastic but constructive. Point out clichés, buzzwords, formatting issues, and weak accomplishments.
 
-Structure your roast in sections:
-1. **Summary Roast** - Overall vibe check (2-3 sentences)
+Structure your roast in sections (put in subtitles):
+1. **Summary (Roast)** - Overall vibe check (2-3 sentences)
 2. **Experience Critique** - Call out weak bullets, buzzwords, vague accomplishments
 3. **Skills Assessment** - Roast generic skills, missing technical depth
 4. **Format & Style** - Comment on layout, length, readability
