@@ -168,14 +168,16 @@ export default function Home() {
       <main className="min-h-screen bg-roast-cream py-12 px-4 pb-24">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-6xl font-bold text-gray-900 mb-4">
-              Resume Roaster 🔥
-            </h1>
-          <p className="text-xl text-gray-700">
-            Find out if you're cooked in this job market.
-          </p>
-        </div>
+          <div className="bg-white rounded-2xl shadow-xl p-8 border-4 border-roast-yellow mb-12">
+            <div className="text-center">
+              <h1 className="text-6xl font-bold text-gray-900 mb-4">
+                Resume Roaster 🔥
+              </h1>
+              <p className="text-xl text-gray-700">
+                Find out if you're cooked in this job market.
+              </p>
+            </div>
+          </div>
 
         {/* Main Content */}
         {state === 'upload' && (
