@@ -28,10 +28,10 @@ Resources:
                 - bedrock:InvokeModel
               Resource:
                 # Allow foundation models across all regions (for cross-region inference profile routing)
-                - arn:aws:bedrock:*::foundation-model/anthropic.claude-sonnet-4-5-20250929-v1:0
+                - arn:aws:bedrock:*::foundation-model/anthropic.claude-3-5-sonnet-20241022-v2:0
                 - arn:aws:bedrock:*::foundation-model/amazon.titan-embed-text-v1
                 # Cross-region inference profiles
-                - arn:aws:bedrock:*:827445769026:inference-profile/us.anthropic.claude-sonnet-4-5-20250929-v1:0
+                - arn:aws:bedrock:*:827445769026:inference-profile/us.anthropic.claude-3-5-sonnet-20241022-v2:0
                 - arn:aws:bedrock:*:827445769026:inference-profile/amazon.titan-embed-text-v1
             - Sid: BedrockMarketplace
               Effect: Allow

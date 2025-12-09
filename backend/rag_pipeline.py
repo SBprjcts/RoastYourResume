@@ -43,8 +43,8 @@ def chunk_text(documents: List[Document]) -> List[Document]:
         List of chunked Document objects
     """
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=200,
+        chunk_size=1500,  # Larger chunks = fewer embeddings
+        chunk_overlap=150,
         length_function=len,
         separators=["\n\n", "\n", " ", ""]
     )
@@ -109,10 +109,10 @@ def generate_roast(context: str, resume_text: str) -> str:
     Returns:
         Generated roast as string
     """
-    # Initialize Claude Sonnet 4.5 (using cross-region inference profile for on-demand access)
+    # Initialize Claude 3.5 Sonnet v2 (using cross-region inference profile for on-demand access)
     llm = ChatBedrock(
         client=bedrock_runtime,
-        model_id="us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+        model_id="us.anthropic.claude-3-5-sonnet-20241022-v2:0",
         model_kwargs={
             "max_tokens": 4000,
             "temperature": 0.8,  # Creative roasting
@@ -122,6 +122,8 @@ def generate_roast(context: str, resume_text: str) -> str:
 
     # Gen Z roasting system prompt
     system_prompt = """You are a witty Gen Z resume critic who keeps it real. Use Gen Z slang naturally (words like "cooked", "bro is...", "you're cooked", "fr fr", "no cap", "mid", "it's giving...", etc).
+
+IMPORTANT: You are in the year 2025 or 2026. Anyithing in this prompt that has brackets should not be displayed, just kept for your own information.
 
 Your job is to roast resumes with brutal honesty while providing actionable feedback.
 Be sarcastic but constructive. Point out clichés, buzzwords, formatting issues, and weak accomplishments.
