@@ -177,7 +177,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="min-h-screen bg-roast-cream px-4 pb-24">
+      <main className="min-h-screen px-4 pb-24">
         <div className="max-w-4xl mx-auto">
         {/* Main Content */}
         {state === 'upload' && (

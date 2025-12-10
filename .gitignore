@@ -20,3 +20,6 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# Development docs (keep local only)
+CLAUDE.md
