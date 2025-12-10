@@ -21,7 +21,7 @@ export default function LoadingAnimation() {
     setMounted(true);
     const interval = setInterval(() => {
       setMessageIndex((prev) => (prev + 1) % loadingMessages.length);
-    }, 3000); // Change message every 3 seconds
+    }, 4000); // Change message every 3 seconds
 
     return () => clearInterval(interval);
   }, []);
