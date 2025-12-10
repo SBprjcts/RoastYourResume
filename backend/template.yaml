@@ -4,7 +4,7 @@ Description: Resume Roaster - Serverless RAG Backend with AWS Bedrock
 
 Globals:
   Function:
-    Timeout: 60
+    Timeout: 90
     MemorySize: 3008
     Runtime: python3.11
     Environment:

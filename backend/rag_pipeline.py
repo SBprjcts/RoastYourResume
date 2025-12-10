@@ -43,8 +43,8 @@ def chunk_text(documents: List[Document]) -> List[Document]:
         List of chunked Document objects
     """
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1500,  # Larger chunks = fewer embeddings
-        chunk_overlap=150,
+        chunk_size=2000,  # Even larger chunks = fewer embeddings = faster
+        chunk_overlap=100,  # Reduced overlap
         length_function=len,
         separators=["\n\n", "\n", " ", ""]
     )
@@ -81,7 +81,7 @@ def initialize_vectorstore(chunks: List[Document], request_id: str) -> FAISS:
     return vectorstore
 
 
-def retrieve_context(vectorstore: FAISS, query: str, k: int = 5) -> List[Document]:
+def retrieve_context(vectorstore: FAISS, query: str, k: int = 2) -> List[Document]:
     """
     Retrieve top-k most relevant chunks via similarity search
 
@@ -114,7 +114,7 @@ def generate_roast(context: str, resume_text: str) -> str:
         client=bedrock_runtime,
         model_id="us.anthropic.claude-3-5-sonnet-20241022-v2:0",
         model_kwargs={
-            "max_tokens": 4000,
+            "max_tokens": 3000,  # Reduced for faster responses
             "temperature": 0.8,  # Creative roasting
             "top_p": 0.9
         }
