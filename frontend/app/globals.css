@@ -13,7 +13,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('/background-pattern.png');
+  background-image: url('/images/background-pattern.png');
   background-size: cover;
   background-position: center;
   background-repeat: repeat;
