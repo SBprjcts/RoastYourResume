@@ -126,8 +126,12 @@ export default function Home() {
       });
 
       if (!roastResponse.ok) {
+        // Show simple error message for timeouts
+        if (roastResponse.status === 504) {
+          throw new Error('Error, please try again');
+        }
         const errorData = await roastResponse.json();
-        throw new Error(errorData.error || 'Failed to generate roast');
+        throw new Error(errorData.error || 'Error, please try again');
       }
 
       const data = await roastResponse.json();
