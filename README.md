@@ -48,49 +48,6 @@ Resume Roaster is a full-stack serverless application that uses AI to critique r
 
 ---
 
-## Architecture
-
-```
-┌─────────────┐      ┌──────────────┐      ┌─────────────┐
-│   Browser   │─────▶│   Next.js    │─────▶│     S3      │
-│             │      │   (Vercel)   │      │  (Uploads)  │
-└─────────────┘      └──────────────┘      └─────────────┘
-                              │
-                              │ POST /api/roast
-                              ▼
-                     ┌──────────────┐
-                     │ API Gateway  │
-                     └──────────────┘
-                              │
-                              ▼
-                     ┌──────────────┐      ┌─────────────┐
-                     │    Lambda    │─────▶│   Bedrock   │
-                     │ (RAG Pipeline)│      │   Claude    │
-                     └──────────────┘      └─────────────┘
-                              │
-                              ▼
-                     ┌──────────────┐
-                     │    FAISS     │
-                     │ Vector Store │
-                     └──────────────┘
-```
-
-### Data Flow
-
-1. **Upload**: User selects PDF → Frontend requests pre-signed S3 URL → Direct upload to S3
-2. **Trigger**: Frontend calls `/api/roast` → API Gateway → Lambda
-3. **RAG Pipeline**:
-   - Download PDF from S3 to Lambda `/tmp/`
-   - Extract text with PyPDFLoader
-   - Chunk text (1500 chars, 150 overlap)
-   - Generate embeddings with Bedrock Titan
-   - Store in FAISS vector store
-   - Retrieve top 3 relevant chunks
-   - Generate roast with Claude 3.5 Sonnet
-4. **Response**: Lambda returns roast → API Gateway → Frontend displays
-
----
-
 ## Cost Breakdown
 
 ### Per Resume Roast (~$0.011)
